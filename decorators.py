@@ -1,46 +1,22 @@
 import time
 
-def wrapper (f):
-    print time.time()
-    def inner(*arg):
-        return f(*arg)
-    print time.time()
-    return inner
+def timed(f):
+  def wrapper(*args, **kwds):
+	start = time.time()
+	result = f(*args, **kwds)
+	elapsed = time.time() - start
+	print "%s took %d seconds to finish" % (f.__name__, elapsed)
+	return result
+  return wrapper
 
 
-
-def foo(x,y,z):
-    x = str(x)
-    y = str(y)
-    return x + " " + y + " " + z
-    
-#closer = wrapper(foo)
-#print closer(-2,3,"hello")
-
-#print foo.func_name
-
-###############################################
-def timing_function(some_function):
-
-    """
-    Outputs the time a function takes
-    to execute.
-    """
-
-    def wrapper():
-        t1 = time.time()
-        some_function()
-        t2 = time.time()
-        return "Time it took to run the function: " + str((t2 - t1)) + "\n"
-    return wrapper
+@timed
+def my_function(x, y, z):
+	num_list = []
+	time.sleep(5)
+	for num in (range(0, 10000)):
+		num_list.append(num)
+	print("\nSum of all the numbers: " + str((sum(num_list))))
 
 
-@timing_function
-def my_function():
-    num_list = []
-    for num in (range(0, 10000)):
-        num_list.append(num)
-    print("\nSum of all the numbers: " + str((sum(num_list))))
-
-
-print(my_function())
+print(my_function(1, 2, 3))
