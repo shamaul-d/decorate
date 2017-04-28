@@ -9,8 +9,17 @@ def timed(f):
 	return result
   return wrapper
 
+def named(f):
+  def wrapper(*args, **kwds):
+  	result = f(*args, **kwds)
+	print f.func_name
+	print "args: " + str(args)
+	return result
+  return wrapper
+
 
 @timed
+@named
 def my_function(x, y, z):
 	num_list = []
 	time.sleep(5)
@@ -19,4 +28,4 @@ def my_function(x, y, z):
 	print("\nSum of all the numbers: " + str((sum(num_list))))
 
 
-print(my_function(1, 2, 3))
+my_function(1, 2, 3)
